@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poopy clicker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            font-family: 'Open Sans', sans-serif; 
+            background: radial-gradient(circle at center, white, black); 
+            background-size: cover;
+            color: #ffffff; 
+            position: relative; 
+            overflow: hidden; /* Prevent scrolling and zooming */
+        }
+        h1 { 
+            font-size: 32px; 
+            margin-bottom: 20px; 
+            color: #00c6ff; 
+        }
+        .tap-to-earn { 
+            font-size: 28px; 
+            margin-bottom: 20px; 
+            font-weight: bold;
+        }
+        .balance { 
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-bottom: 30px; 
+            border-radius: 50%; 
+            width: 60px; 
+            height: 60px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: absolute; 
+            top: 40px; 
+            left: 50%; 
+            transform: translateX(-50%);
+        }
+        .coin-logo {
+            width: 30px; 
+            height: auto; 
+        }
+        .cookie { 
+            width: 200px; 
+            height: 200px; 
+            cursor: pointer; 
+            margin-bottom: 30px; 
+            transition: transform 0.1s; 
+        }
+        .cookie:active { 
+            transform: scale(1.1); 
+        }
+        .energy { 
+            position: absolute; 
+            bottom: 20px; 
+            left: 20px; 
+            display: flex; 
+            align-items: center; 
+            font-size: 20px; 
+        }
+        .energy-logo { 
+            width: 40px; 
+            height: 40px; 
+            margin-right: 10px; 
+        }
+        .energy-value { 
+            font-size: 20px; 
+            line-height: 1; 
+            text-align: center; 
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .payout { 
+            flex-direction: column; 
+            align-items: center; 
+            width: 80%; 
+            max-width: 300px; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #3a3a3a, #1a1a1a); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            position: absolute; 
+            top: 80px; 
+            right: 20px;
+            display: none;
+        }
+        .payout input { 
+            padding: 15px; 
+            font-size: 20px; 
+            margin-bottom: 15px; 
+            width: 100%; 
+            border: none; 
+            border-radius: 10px; 
+            background: linear-gradient(135deg, #3a3a3a, #1a1a1a); 
+            color: #ffffff; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            text-align: center; 
+        }
+        .payout button { 
+            padding: 15px 30px; 
+            font-size: 20px; 
+            background-color: #00c6ff; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        }
+        .payout button:hover { 
+            background-color: #007acc; 
+        }
+        @keyframes scoreAnimation {
+    0% { opacity: 1; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-20px); }
+    100% { opacity: 0; transform: translateY(-40px); }
+}
+.score-animation {
+    position: absolute;
+    z-index: 9999;
+    color: white;
+    animation: scoreAnimation 1s ease-out;
+    user-select: none; /* Prevent text selection */
+    pointer-events: none; /* Prevent text interaction */
+}
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        .bounce {
+            animation: bounce 0.1s;
+        }
+        .boost-menu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 300px;
+            padding: 20px;
+            background: linear-gradient(135deg, #3a3a3a, #1a1a1a);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 80px;
+            left: 20px;
+        }
+        .boost {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .boost-title {
+            font-size: 18px;
+            color: #00c6ff;
+        }
+        .boost-level, .boost-price {
+            font-size: 16px;
+        }
+        .boost-price img {
+            width: 20px;
+            height: auto;
+            vertical-align: middle;
+        }
+        #boostMenuButton {
+            position: absolute;
+            bottom: 45px;
+            right: 15px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+        }
+        #boostMenuButton img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="score-animation-container"></div>
+    <div class="balance">
+        <img src="coin-logo.png" alt="Coin" class="coin-logo">
+        <span id="score">0</span>
+    </div>
+    <div class="tap-to-earn">TAP TO EARN</div>
+    <img src="cookie.png" alt="Cookie" class="cookie" id="cookie">
+    <div class="payout" id="payoutBox">
+        <input type="text" id="wallet" placeholder="Enter your TON wallet address">
+        <button id="loginButton">Login</button>
+        <button id="payoutButton">Payout</button>
+    </div>
+    <div class="energy">
+        <img src="energy.png" alt="Energy" class="energy-logo">
+        <div class="energy-value">
+            <div><span class="bold" id="current-energy">0</span></div>
+            <div>/5000</div>
+        </div>
+    </div>
+    <div class="boost-menu" id="boostMenu">
+        <div class="boost">
+            <span class="boost-title">Energy Regen</span>
+            <span class="boost-level" id="energyRegenLevel">0/10</span>
+            <span class="boost-price">100 <img src="coin-logo.png" alt="Coin"></span>
+            <button id="boostEnergyRegen">Buy</button>
+        </div>
+        <div class="boost">
+            <span class="boost-title">Strength</span>
+            <span class="boost-level" id="strengthLevel">0/10</span>
+            <span class="boost-price">100 <img src="coin-logo.png" alt="Coin"></span>
+            <button id="boostStrength">Buy</button>
+        </div>
+        <div class="boost">
+            <span class="boost-title">Efficiency</span>
+            <span class="boost-level" id="efficiencyLevel">0/10</span>
+            <span class="boost-price">100 <img src="coin-logo.png" alt="Coin"></span>
+            <button id="boostEfficiency">Buy</button>
+        </div>
+    </div>
+    <img src="boost-icon.png" alt="Boost Menu" id="boostMenuButton">
+    <script src="https://unpkg.com/tonweb/dist/tonweb.js"></script>
+    <script>
+        let score = parseInt(localStorage.getItem('score')) || 0;
+        let energy = parseInt(localStorage.getItem('energy')) || 5000;
+        let walletAddress = localStorage.getItem('walletAddress') || '';
+        let energyRegenLevel = parseInt(localStorage.getItem('energyRegenLevel')) || 0;
+        let strengthLevel = parseInt(localStorage.getItem('strengthLevel')) || 0;
+        let efficiencyLevel = parseInt(localStorage.getItem('efficiencyLevel')) || 0;
+
+        const boostCost = 100;
+        const maxBoostLevel = 10;
+
+        function updateEnergy() {
+            const lastEnergyUpdate = localStorage.getItem('lastEnergyUpdate');
+            const now = Date.now();
+
+            if (lastEnergyUpdate) {
+                const timePassed = now - parseInt(lastEnergyUpdate, 10);
+                const hoursPassed = Math.floor(timePassed / (1000 * 60 * 60));
+
+                if (hoursPassed >= 2) {
+                    energy = 5000;
+                    localStorage.setItem('energy', energy);
+                    localStorage.setItem('lastEnergyUpdate', now.toString());
+                }
+            } else {
+                localStorage.setItem('lastEnergyUpdate', now.toString());
+            }
+
+            document.getElementById('current-energy').innerText = energy;
+        }
+
+        function updateBoostLevels() {
+            document.getElementById('energyRegenLevel').innerText = `${energyRegenLevel}/${maxBoostLevel}`;
+            document.getElementById('strengthLevel').innerText = `${strengthLevel}/${maxBoostLevel}`;
+            document.getElementById('efficiencyLevel').innerText = `${efficiencyLevel}/${maxBoostLevel}`;
+        }
+
+        function buyBoost(boostType) {
+            if (score >= boostCost) {
+                switch (boostType) {
+                    case 'energyRegen':
+                        if (energyRegenLevel < maxBoostLevel) {
+                            energyRegenLevel++;
+                            localStorage.setItem('energyRegenLevel', energyRegenLevel);
+                        }
+                        break;
+                    case 'strength':
+                        if (strengthLevel < maxBoostLevel) {
+                            strengthLevel++;
+                            localStorage.setItem('strengthLevel', strengthLevel);
+                        }
+                        break;
+                    case 'efficiency':
+                        if (efficiencyLevel < maxBoostLevel) {
+                            efficiencyLevel++;
+                            localStorage.setItem('efficiencyLevel', efficiencyLevel);
+                        }
+                        break;
+                }
+                score -= boostCost;
+                localStorage.setItem('score', score);
+                updateBoostLevels();
+                document.getElementById('score').innerText = score;
+            } else {
+                alert('Not enough score to buy boost');
+            }
+        }
+
+        document.getElementById('cookie').onclick = function(event) {
+            if (energy > 0) {
+                const scoreIncrease = 1 + (strengthLevel * 0.4);
+                score += scoreIncrease;
+                energy -= 1;
+                document.getElementById('score').innerText = score;
+                document.getElementById('current-energy').innerText = energy;
+                localStorage.setItem('score', score);
+                localStorage.setItem('energy', energy);
+
+                const clickX = event.clientX;
+                const clickY = event.clientY;
+                const scoreAnimation = document.createElement('div');
+                scoreAnimation.classList.add('score-animation', 'bold', 'white');
+                scoreAnimation.innerText = `+${Math.floor(scoreIncrease)}`;
+                scoreAnimation.style.left = clickX + 'px';
+                scoreAnimation.style.top = clickY + 'px';
+                document.getElementById('score-animation-container').appendChild(scoreAnimation);
+                setTimeout(() => {
+                    scoreAnimation.remove();
+                }, 1000);
+
+                document.getElementById('score').style.animation = 'bounce 0.5s';
+                setTimeout(() => {
+                    document.getElementById('score').style.animation = '';
+                }, 500);
+            } else {
+                alert('Out of energy! Please wait for it to recharge.');
+            }
+        };
+
+        document.getElementById('loginButton').onclick = function() {
+            const wallet = document.getElementById('wallet').value;
+            if (!wallet) {
+                alert('Please enter your TON wallet address');
+                return;
+            }
+            walletAddress = wallet;
+            localStorage.setItem('walletAddress', walletAddress);
+            alert('Login successful');
+        };
+
+        document.getElementById('payoutButton').onclick = function() {
+            if (!walletAddress) {
+                alert('Please login with your TON wallet address');
+                return;
+            }
+
+            fetch('/payout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ score: score, wallet: walletAddress })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Payout successful!');
+                    score = 0;
+                    document.getElementById('score').innerText = score;
+                    localStorage.setItem('score', score);
+                } else {
+                    alert('Payout failed: ' + data.message);
+                }
+            });
+        };
+
+        document.getElementById('boostMenuButton').onclick = function() {
+            const boostMenu = document.getElementById('boostMenu');
+            if (boostMenu.style.display === 'none' || boostMenu.style.display === '') {
+                boostMenu.style.display = 'flex';
+            } else {
+                boostMenu.style.display = 'none';
+            }
+        };
+
+        document.getElementById('boostEnergyRegen').onclick = function() {
+            buyBoost('energyRegen');
+        };
+
+        document.getElementById('boostStrength').onclick = function() {
+            buyBoost('strength');
+        };
+
+        document.getElementById('boostEfficiency').onclick = function() {
+            buyBoost('efficiency');
+        };
+
+        window.onload = function() {
+            document.getElementById('score').innerText = score;
+            updateBoostLevels();
+            updateEnergy();
+            setInterval(updateEnergy, 1000 * 60 * 60); // Check energy recharge every hour
+        };
+    </script>
+</body>
+</html>

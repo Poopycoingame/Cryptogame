@@ -237,13 +237,13 @@
         <img src="energy.png" alt="Energy" class="energy-logo">
         <div class="energy-value">
             <div><span class="bold" id="current-energy">0</span></div>
-            <div>/5000</div>
+            <div>/500</div>
         </div>
     </div>
     <div class="boost-menu" id="boostMenu">
         <div class="boost">
             <span class="boost-title">Energy Regen</span>
-            <span class="boost-level" id="energyRegenLevel">0/10</span>
+            <span class="boost-level" id="energyRegenLevel">LVL 0/10</span>
             <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostEnergyRegen">Buy</button>
         </div>
@@ -255,7 +255,7 @@
         </div>
         <div class="boost">
             <span class="boost-title">Efficiency</span>
-            <span class="boost-level" id="efficiencyLevel">0/10</span>
+            <span class="boost-level" id="efficiencyLevel">LVL 0/10</span>
             <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostEfficiency">Buy</button>
         </div>
@@ -264,7 +264,7 @@
     <script src="https://unpkg.com/tonweb/dist/tonweb.js"></script>
     <script>
         let score = parseInt(localStorage.getItem('score')) || 0;
-        let energy = parseInt(localStorage.getItem('energy')) || 5000;
+        let energy = parseInt(localStorage.getItem('energy')) || 500;
         let walletAddress = localStorage.getItem('walletAddress') || '';
         let energyRegenLevel = parseInt(localStorage.getItem('energyRegenLevel')) || 0;
         let strengthLevel = parseInt(localStorage.getItem('strengthLevel')) || 0;
@@ -282,7 +282,7 @@
                 const hoursPassed = Math.floor(timePassed / (1000 * 60 * 60));
 
                 if (hoursPassed >= 2) {
-                    energy = 5000;
+                    energy = 500;
                     localStorage.setItem('energy', energy);
                     localStorage.setItem('lastEnergyUpdate', now.toString());
                 }

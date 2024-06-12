@@ -330,36 +330,37 @@
             }
         }
 
-        document.getElementById('cookie').onclick = function(event) {
-            if (energy > 0) {
-                const scoreIncrease = 1 + (strengthLevel * 0.4);
-                score += scoreIncrease;
-                energy -= 1;
-                document.getElementById('score').innerText = score;
-                document.getElementById('current-energy').innerText = energy;
-                localStorage.setItem('score', score);
-                localStorage.setItem('energy', energy);
+        document.getElementById('cookie').ontouchstart = function(event) {
+    if (energy > 0) {
+        const scoreIncrease = 1 + (strengthLevel * 0.4);
+        score += scoreIncrease;
+        energy -= 1;
+        document.getElementById('score').innerText = score;
+        document.getElementById('current-energy').innerText = energy;
+        localStorage.setItem('score', score);
+        localStorage.setItem('energy', energy);
 
-                const clickX = event.clientX;
-                const clickY = event.clientY;
-                const scoreAnimation = document.createElement('div');
-                scoreAnimation.classList.add('score-animation', 'bold', 'white');
-                scoreAnimation.innerText = `+${Math.floor(scoreIncrease)}`;
-                scoreAnimation.style.left = clickX + 'px';
-                scoreAnimation.style.top = clickY + 'px';
-                document.getElementById('score-animation-container').appendChild(scoreAnimation);
-                setTimeout(() => {
-                    scoreAnimation.remove();
-                }, 1000);
+        const clickX = event.touches[0].clientX;
+        const clickY = event.touches[0].clientY;
+        const scoreAnimation = document.createElement('div');
+        scoreAnimation.classList.add('score-animation', 'bold', 'white');
+        scoreAnimation.innerText = `+${Math.floor(scoreIncrease)}`;
+        scoreAnimation.style.left = clickX + 'px';
+        scoreAnimation.style.top = clickY + 'px';
+        document.getElementById('score-animation-container').appendChild(scoreAnimation);
+        setTimeout(() => {
+            scoreAnimation.remove();
+        }, 1000);
 
-                document.getElementById('score').style.animation = 'bounce 0.5s';
-                setTimeout(() => {
-                    document.getElementById('score').style.animation = '';
-                }, 500);
-            } else {
-                alert('Out of energy! Please wait for it to recharge.');
-            }
-        };
+        document.getElementById('score').classList.add('bounce');
+        setTimeout(() => {
+            document.getElementById('score').classList.remove('bounce');
+        }, 500);
+    } else {
+        alert('Out of energy! Please wait for it to recharge.');
+    }
+};
+
 
         document.getElementById('loginButton').onclick = function() {
             const wallet = document.getElementById('wallet').value;

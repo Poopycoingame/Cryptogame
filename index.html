@@ -248,13 +248,13 @@
             <button id="boostEnergyRegen">Buy</button>
         </div>
         <div class="boost">
-            <span class="boost-title">Strength</span>
+            <span class="boost-title">TAP POWER</span>
             <span class="boost-level" id="strengthLevel">LVL 0/10</span>
             <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostStrength">Buy</button>
         </div>
         <div class="boost">
-            <span class="boost-title">Efficiency</span>
+            <span class="boost-title">SPEED</span>
             <span class="boost-level" id="efficiencyLevel">0/10</span>
             <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostEfficiency">Buy</button>
@@ -294,9 +294,13 @@
         }
 
         function updateBoostLevels() {
-            document.getElementById('energyRegenLevel').innerText = `${energyRegenLevel}/${maxBoostLevel}`;
-            document.getElementById('strengthLevel').innerText = `${strengthLevel}/${maxBoostLevel}`;
-            document.getElementById('efficiencyLevel').innerText = `${efficiencyLevel}/${maxBoostLevel}`;
+			const energyRegenDisplay = energyRegenLevel === maxBoostLevel ? 'MAX' : `LVL ${energyRegenLevel}`;
+			const strengthDisplay = strengthLevel === maxBoostLevel ? 'MAX' : `LVL ${strengthLevel}`;
+			const efficiencyDisplay = efficiencyLevel === maxBoostLevel ? 'MAX' : `LVL ${efficiencyLevel}`;'
+	
+			document.getElementById('energyRegenLevel').innerText = energyRegenDisplay;
+			document.getElementById('strengthLevel').innerText = strengthDisplay;
+			document.getElementById('efficiencyLevel').innerText = efficiencyDisplay;
         }
 
         function buyBoost(boostType) {

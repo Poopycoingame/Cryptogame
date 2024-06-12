@@ -49,15 +49,15 @@
             width: 30px; 
             height: auto; 
         }
-        .cookie { 
-            width: 200px; 
-            height: 200px; 
-            cursor: pointer; 
-            margin-bottom: 30px; 
-            transition: transform 0.1s; 
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
-        }
+.cookie { 
+    width: 200px; 
+    height: 200px; 
+    cursor: pointer; 
+    margin-bottom: 30px; 
+    transition: transform 0.1s; 
+    touch-action: manipulation;
+    overflow: hidden; /* Prevent scrolling and zooming */
+}
 
         .cookie:active { 
             transform: scale(1.1); 
@@ -69,22 +69,22 @@
             display: flex; 
             align-items: center; 
             font-size: 20px; 
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
+			touch-action: manipulation;
+			overflow: hidden; /* Prevent scrolling and zooming */
         }
         .energy-logo { 
             width: 40px; 
             height: 40px; 
             margin-right: 10px; 
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
+			touch-action: manipulation;
+			overflow: hidden; /* Prevent scrolling and zooming */
         }
         .energy-value { 
             font-size: 20px; 
             line-height: 1; 
             text-align: center; 
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
+			touch-action: manipulation;
+			overflow: hidden; /* Prevent scrolling and zooming */
         }
         .bold {
             font-weight: bold;
@@ -102,8 +102,8 @@
             top: 80px; 
             right: 20px;
             display: none;
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
+			touch-action: manipulation;
+			overflow: hidden; /* Prevent scrolling and zooming */
         }
         .payout input { 
             padding: 15px; 
@@ -116,8 +116,8 @@
             color: #ffffff; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
             text-align: center; 
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
+			touch-action: manipulation;
+			overflow: hidden; /* Prevent scrolling and zooming */
         }
         .payout button { 
             padding: 15px 30px; 
@@ -128,25 +128,25 @@
             border-radius: 10px; 
             cursor: pointer; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-            touch-action: manipulation;
-            overflow: hidden; /* Prevent scrolling and zooming */
+			touch-action: manipulation;
+			overflow: hidden; /* Prevent scrolling and zooming */
         }
         .payout button:hover { 
             background-color: #007acc; 
         }
         @keyframes scoreAnimation {
-            0% { opacity: 1; transform: translateY(0); }
-            50% { opacity: 1; transform: translateY(-20px); }
-            100% { opacity: 0; transform: translateY(-40px); }
-        }
-        .score-animation {
-            position: absolute;
-            z-index: 9999;
-            color: white;
-            animation: scoreAnimation 1s ease-out;
-            user-select: none; /* Prevent text selection */
-            pointer-events: none; /* Prevent text interaction */
-        }
+    0% { opacity: 1; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-20px); }
+    100% { opacity: 0; transform: translateY(-40px); }
+}
+.score-animation {
+    position: absolute;
+    z-index: 9999;
+    color: white;
+    animation: scoreAnimation 1s ease-out;
+    user-select: none; /* Prevent text selection */
+    pointer-events: none; /* Prevent text interaction */
+}
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
@@ -175,7 +175,8 @@
             position: absolute;
             top: 80px;
             left: 20px;
-            touch-action: manipulation;
+			touch-action: manipulation;
+			
         }
         .boost {
             display: flex;
@@ -183,20 +184,25 @@
             align-items: center;
             width: 100%;
             margin-bottom: 10px;
-            touch-action: manipulation;
+			touch-action: manipulation;
+			
         }
         .boost-title {
             font-size: 18px;
             color: #00c6ff;
+			
+			
         }
         .boost-level, .boost-price {
             font-size: 16px;
+			
         }
         .boost-price img {
             width: 20px;
             height: auto;
             vertical-align: middle;
-            touch-action: manipulation;
+			touch-action: manipulation;
+			
         }
         #boostMenuButton {
             position: absolute;
@@ -205,7 +211,8 @@
             cursor: pointer;
             width: 30px;
             height: 30px;
-            touch-action: manipulation;
+			touch-action: manipulation;
+			
         }
         #boostMenuButton img {
             width: 100%;
@@ -242,10 +249,9 @@
         </div>
         <div class="boost">
             <span class="boost-title">TAP POWER</span>
-            <span class="boost-level" id="strengthLevel">LVL 0/10</span>
+            <span class="boost-level" id="strengthLevel">0/10</span>
             <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
-           
-<button id="boostStrength">Buy</button>
+            <button id="boostStrength">Buy</button>
         </div>
         <div class="boost">
             <span class="boost-title">SPEED</span>
@@ -288,13 +294,13 @@
         }
 
         function updateBoostLevels() {
-            const energyRegenDisplay = energyRegenLevel === maxBoostLevel ? 'MAX' : `LVL ${energyRegenLevel}`;
-            const strengthDisplay = strengthLevel === maxBoostLevel ? 'MAX' : `LVL ${strengthLevel}`;
-            const efficiencyDisplay = efficiencyLevel === maxBoostLevel ? 'MAX' : `LVL ${efficiencyLevel}`;
-
-            document.getElementById('energyRegenLevel').innerText = energyRegenDisplay;
-            document.getElementById('strengthLevel').innerText = strengthDisplay;
-            document.getElementById('efficiencyLevel').innerText = efficiencyDisplay;
+			const energyRegenDisplay = energyRegenLevel === maxBoostLevel ? 'MAX' : `LVL ${energyRegenLevel}`;
+			const strengthDisplay = strengthLevel === maxBoostLevel ? 'MAX' : `LVL ${strengthLevel}`;
+			const efficiencyDisplay = efficiencyLevel === maxBoostLevel ? 'MAX' : `LVL ${efficiencyLevel}`;'
+	
+			document.getElementById('energyRegenLevel').innerText = energyRegenDisplay;
+			document.getElementById('strengthLevel').innerText = strengthDisplay;
+			document.getElementById('efficiencyLevel').innerText = efficiencyDisplay;
         }
 
         function buyBoost(boostType) {
@@ -329,35 +335,36 @@
         }
 
         document.getElementById('cookie').ontouchstart = function(event) {
-            if (energy > 0) {
-                const scoreIncrease = 1 + (strengthLevel * 0.4);
-                score += scoreIncrease;
-                energy -= 1;
-                document.getElementById('score').innerText = score;
-                document.getElementById('current-energy').innerText = energy;
-                localStorage.setItem('score', score);
-                localStorage.setItem('energy', energy);
+    if (energy > 0) {
+        const scoreIncrease = 1 + (strengthLevel * 0.4);
+        score += scoreIncrease;
+        energy -= 1;
+        document.getElementById('score').innerText = score;
+        document.getElementById('current-energy').innerText = energy;
+        localStorage.setItem('score', score);
+        localStorage.setItem('energy', energy);
 
-                const clickX = event.touches[0].clientX;
-                const clickY = event.touches[0].clientY;
-                const scoreAnimation = document.createElement('div');
-                scoreAnimation.classList.add('score-animation', 'bold', 'white');
-                scoreAnimation.innerText = `+${Math.floor(scoreIncrease)}`;
-                scoreAnimation.style.left = clickX + 'px';
-                scoreAnimation.style.top = clickY + 'px';
-                document.getElementById('score-animation-container').appendChild(scoreAnimation);
-                setTimeout(() => {
-                    scoreAnimation.remove();
-                }, 1000);
+        const clickX = event.touches[0].clientX;
+        const clickY = event.touches[0].clientY;
+        const scoreAnimation = document.createElement('div');
+        scoreAnimation.classList.add('score-animation', 'bold', 'white');
+        scoreAnimation.innerText = `+${Math.floor(scoreIncrease)}`;
+        scoreAnimation.style.left = clickX + 'px';
+        scoreAnimation.style.top = clickY + 'px';
+        document.getElementById('score-animation-container').appendChild(scoreAnimation);
+        setTimeout(() => {
+            scoreAnimation.remove();
+        }, 1000);
 
-                document.getElementById('score').classList.add('bounce');
-                setTimeout(() => {
-                    document.getElementById('score').classList.remove('bounce');
-                }, 500);
-            } else {
-                alert('Out of energy! Please wait for it to recharge.');
-            }
-        };
+        document.getElementById('score').classList.add('bounce');
+        setTimeout(() => {
+            document.getElementById('score').classList.remove('bounce');
+        }, 500);
+    } else {
+        alert('Out of energy! Please wait for it to recharge.');
+    }
+};
+
 
         document.getElementById('loginButton').onclick = function() {
             const wallet = document.getElementById('wallet').value;
@@ -381,7 +388,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ score: score, wallet: walletAddress })
             })
-            .then(response => response.json
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert('Payout successful!');

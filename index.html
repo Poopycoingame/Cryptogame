@@ -249,7 +249,7 @@
         </div>
         <div class="boost">
             <span class="boost-title">TAP POWER</span>
-            <span class="boost-level" id="strengthLevel">0/10</span>
+            <span class="boost-level" id="strengthLevel">LVL 0/10</span>
             <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostStrength">Buy</button>
         </div>
@@ -294,13 +294,9 @@
         }
 
         function updateBoostLevels() {
-			const energyRegenDisplay = energyRegenLevel === maxBoostLevel ? 'MAX' : `LVL ${energyRegenLevel}`;
-			const strengthDisplay = strengthLevel === maxBoostLevel ? 'MAX' : `LVL ${strengthLevel}`;
-			const efficiencyDisplay = efficiencyLevel === maxBoostLevel ? 'MAX' : `LVL ${efficiencyLevel}`;'
-	
-			document.getElementById('energyRegenLevel').innerText = energyRegenDisplay;
-			document.getElementById('strengthLevel').innerText = strengthDisplay;
-			document.getElementById('efficiencyLevel').innerText = efficiencyDisplay;
+            document.getElementById('energyRegenLevel').innerText = `${energyRegenLevel}/${maxBoostLevel}`;
+            document.getElementById('strengthLevel').innerText = `${strengthLevel}/${maxBoostLevel}`;
+            document.getElementById('efficiencyLevel').innerText = `${efficiencyLevel}/${maxBoostLevel}`;
         }
 
         function buyBoost(boostType) {

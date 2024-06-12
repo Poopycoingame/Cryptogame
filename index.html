@@ -263,72 +263,172 @@
     <img src="boost-icon.png" alt="Boost Menu" id="boostMenuButton">
     <script src="https://unpkg.com/tonweb/dist/tonweb.js"></script>
     <script>
-        let score = parseInt(localStorage.getItem('score')) || 0;
-        let energy = parseInt(localStorage.getItem('energy')) || 500;
-        let walletAddress = localStorage.getItem('walletAddress') || '';
-        let energyRegenLevel = parseInt(localStorage.getItem('energyRegenLevel')) || 0;
-        let strengthLevel = parseInt(localStorage.getItem('strengthLevel')) || 0;
-        let efficiencyLevel = parseInt(localStorage.getItem('efficiencyLevel')) || 0;
+    let score = parseInt(localStorage.getItem('score')) || 0;
+    let energy = parseInt(localStorage.getItem('energy')) || 500;
+    let walletAddress = localStorage.getItem('walletAddress') || '';
+    let energyRegenLevel = parseInt(localStorage.getItem('energyRegenLevel')) || 0;
+    let strengthLevel = parseInt(localStorage.getItem('strengthLevel')) || 0;
+    let efficiencyLevel = parseInt(localStorage.getItem('efficiencyLevel')) || 0;
 
-        const boostCost = 1000;
-        const maxBoostLevel = 10;
+    const boostCost = 1000;
+    const maxBoostLevel = 10;
+    const energyRegenRate = 1; // 1 energy per second
 
-        function updateEnergy() {
-            const lastEnergyUpdate = localStorage.getItem('lastEnergyUpdate');
-            const now = Date.now();
+    function updateEnergy() {
+        const lastEnergyUpdate = localStorage.getItem('lastEnergyUpdate');
+        const now = Date.now();
 
-            if (lastEnergyUpdate) {
-                const timePassed = now - parseInt(lastEnergyUpdate, 10);
-                const hoursPassed = Math.floor(timePassed / (1000 * 60 * 60));
+        if (lastEnergyUpdate) {
+            const timePassed = now - parseInt(lastEnergyUpdate, 10);
+            const secondsPassed = Math.floor(timePassed / 1000); // Convert milliseconds to seconds
 
-                if (hoursPassed >= 2) {
-                    energy = 500;
-                    localStorage.setItem('energy', energy);
-                    localStorage.setItem('lastEnergyUpdate', now.toString());
-                }
-            } else {
-                localStorage.setItem('lastEnergyUpdate', now.toString());
+            // Add energy based on the regen rate
+            energy += secondsPassed * energyRegenRate;
+
+            // Cap energy at 500
+            energy = Math.min(energy, 500);
+
+            localStorage.setItem('energy', energy);
+            localStorage.setItem('lastEnergyUpdate', now.toString());
+        } else {
+            localStorage.setItem('lastEnergyUpdate', now.toString());
+        }
+
+        document.getElementById('current-energy').innerText = energy;
+    }
+
+    function updateBoostLevels() {
+        document.getElementById('energyRegenLevel').innerText = `${energyRegenLevel}/${maxBoostLevel}`;
+        document.getElementById('strengthLevel').innerText = `${strengthLevel}/${maxBoostLevel}`;
+        document.getElementById('efficiencyLevel').innerText = `${efficiencyLevel}/${maxBoostLevel}`;
+    }
+
+    function buyBoost(boostType) {
+        if (score >= boostCost) {
+            switch (boostType) {
+                case 'energyRegen':
+                    if (energyRegenLevel < maxBoostLevel) {
+                        energyRegenLevel++;
+                        localStorage.setItem('energyRegenLevel', energyRegenLevel);
+                    }
+                    break;
+                case 'strength':
+                    if (strengthLevel < maxBoostLevel) {
+                        strengthLevel++;
+                        localStorage.setItem('strengthLevel', strengthLevel);
+                    }
+                    break;
+                case 'efficiency':
+                    if (efficiencyLevel < maxBoostLevel) {
+                        efficiencyLevel++;
+                        localStorage.setItem('efficiencyLevel', efficiencyLevel);
+                    }
+                    break;
             }
+            score -= boostCost;
+            localStorage.setItem('score', score);
+            updateBoostLevels();
+            document.getElementById('score').innerText = score;
+        } else {
+            alert('Not enough score to buy boost');
+        }
+    }
 
+    document.getElementById('cookie').ontouchstart = function(event) {
+        if (energy > 0) {
+            const scoreIncrease = 1 + (strengthLevel * 0.4);
+            score += scoreIncrease;
+            energy -= 1;
+            document.getElementById('score').innerText = score;
             document.getElementById('current-energy').innerText = energy;
+            localStorage.setItem('score', score);
+            localStorage.setItem('energy', energy);
+
+            const clickX = event.touches[0].clientX;
+            const clickY = event.touches[0].clientY;
+            const scoreAnimation = document.createElement('div');
+            scoreAnimation.classList.add('score-animation', 'bold', 'white');
+            scoreAnimation.innerText = `+${Math.floor(scoreIncrease)}`;
+            scoreAnimation.style.left = clickX + 'px';
+            scoreAnimation.style.top = clickY + 'px';
+            document.getElementById('score-animation-container').appendChild(scoreAnimation);
+            setTimeout(() => {
+                scoreAnimation.remove();
+            }, 1000);
+
+            document.getElementById('score').classList.add('bounce');
+            setTimeout(() => {
+                document.getElementById('score').classList.remove('bounce');
+            }, 500);
+        } else {
+            alert('Out of energy! Please wait for it to recharge.');
+        }
+    };
+
+    document.getElementById('loginButton').onclick = function() {
+        const wallet = document.getElementById('wallet').value;
+        if (!wallet) {
+            alert('Please enter your TON wallet address');
+            return;
+        }
+        walletAddress = wallet;
+        localStorage.setItem('walletAddress', walletAddress);
+        alert('Login successful');
+    };
+
+    document.getElementById('payoutButton').onclick = function() {
+        if (!walletAddress) {
+            alert('Please login with your TON wallet address');
+            return;
         }
 
-        function updateBoostLevels() {
-            document.getElementById('energyRegenLevel').innerText = `${energyRegenLevel}/${maxBoostLevel}`;
-            document.getElementById('strengthLevel').innerText = `${strengthLevel}/${maxBoostLevel}`;
-            document.getElementById('efficiencyLevel').innerText = `${efficiencyLevel}/${maxBoostLevel}`;
-        }
-
-        function buyBoost(boostType) {
-            if (score >= boostCost) {
-                switch (boostType) {
-                    case 'energyRegen':
-                        if (energyRegenLevel < maxBoostLevel) {
-                            energyRegenLevel++;
-                            localStorage.setItem('energyRegenLevel', energyRegenLevel);
-                        }
-                        break;
-                    case 'strength':
-                        if (strengthLevel < maxBoostLevel) {
-                            strengthLevel++;
-                            localStorage.setItem('strengthLevel', strengthLevel);
-                        }
-                        break;
-                    case 'efficiency':
-                        if (efficiencyLevel < maxBoostLevel) {
-                            efficiencyLevel++;
-                            localStorage.setItem('efficiencyLevel', efficiencyLevel);
-                        }
-                        break;
-                }
-                score -= boostCost;
-                localStorage.setItem('score', score);
-                updateBoostLevels();
+        fetch('/payout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ score: score, wallet: walletAddress })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Payout successful!');
+                score = 0;
                 document.getElementById('score').innerText = score;
+                localStorage.setItem('score', score);
             } else {
-                alert('Not enough score to buy boost');
+                alert('Payout failed: ' + data.message);
             }
+        });
+    };
+
+    document.getElementById('boostMenuButton').onclick = function() {
+        const boostMenu = document.getElementById('boostMenu');
+        if (boostMenu.style.display === 'none' || boostMenu.style.display === '') {
+            boostMenu.style.display = 'flex';
+        } else {
+            boostMenu.style.display = 'none';
         }
+    };
+
+    document.getElementById('boostEnergyRegen').onclick = function() {
+        buyBoost('energyRegen');
+    };
+
+    document.getElementById('boostStrength').onclick = function() {
+        buyBoost('strength');
+    };
+
+    document.getElementById('boostEfficiency').onclick = function() {
+        buyBoost('efficiency');
+    };
+
+    window.onload = function() {
+        document.getElementById('score').innerText = score;
+        updateBoostLevels();
+        updateEnergy();
+        setInterval(updateEnergy, 1000); // Update energy every second
+    };
+</script>
+
 
         document.getElementById('cookie').ontouchstart = function(event) {
     if (energy > 0) {

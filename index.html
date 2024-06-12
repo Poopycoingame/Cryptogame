@@ -244,19 +244,19 @@
         <div class="boost">
             <span class="boost-title">Energy Regen</span>
             <span class="boost-level" id="energyRegenLevel">0/10</span>
-            <span class="boost-price">100 <img src="coin-logo.png" alt="Coin"></span>
+            <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostEnergyRegen">Buy</button>
         </div>
         <div class="boost">
             <span class="boost-title">Strength</span>
-            <span class="boost-level" id="strengthLevel">0/10</span>
-            <span class="boost-price">100 <img src="coin-logo.png" alt="Coin"></span>
+            <span class="boost-level" id="strengthLevel">LVL 0/10</span>
+            <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostStrength">Buy</button>
         </div>
         <div class="boost">
             <span class="boost-title">Efficiency</span>
             <span class="boost-level" id="efficiencyLevel">0/10</span>
-            <span class="boost-price">100 <img src="coin-logo.png" alt="Coin"></span>
+            <span class="boost-price">1000 <img src="coin-logo.png" alt="Coin"></span>
             <button id="boostEfficiency">Buy</button>
         </div>
     </div>
@@ -270,7 +270,7 @@
         let strengthLevel = parseInt(localStorage.getItem('strengthLevel')) || 0;
         let efficiencyLevel = parseInt(localStorage.getItem('efficiencyLevel')) || 0;
 
-        const boostCost = 100;
+        const boostCost = 1000;
         const maxBoostLevel = 10;
 
         function updateEnergy() {
